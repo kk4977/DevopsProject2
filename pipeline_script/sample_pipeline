@@ -1,11 +1,27 @@
 pipeline {
     agent any
+    environment {
+        SCANNER_HOME = tool 'SonarQube Scanner'
+    }
 
     stages {
-        stage('1.Git Checkout') {
+        stage('1 . Git Checkout') {
             steps {
-                echo 'Hello World'
+                git branch: 'main', 
+                url: 'https://github.com/kk4977/DevopsProject2.git'
             }
         }
+
+        stage('2 . SonarQube Analysis') {
+                steps {
+                    withSonarQubeEnv ('sonar-server){
+                        $SCANNER_HOME/bin/sonar-scanner \
+                        -Dsonar.projectName=amazon-prime \
+                        -Dsonar.projectKey=amazon-prime
+
+     
+                    }
+                }
+            }
     }
 }
